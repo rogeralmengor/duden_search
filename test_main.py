@@ -1,5 +1,9 @@
 import requests
+import bs4
 import urllib.request
+from playwright.sync_api import sync_playwright
+
+
 URL = "https://duden.de"
 
 def can_open_website(url): 
@@ -23,6 +27,18 @@ def create_url_search(duden_url, word):
     else: 
         return duden_url + "/" + "suchen" + "/" + "dudenonline" + "/" + word 
 
+def launch_browser(): 
+    with sync_playwright as p: 
+        browser = p.chromium.launch(headless=False, slow_mo=50)
+        page = browser.new_page() 
+        page.goto(URL)
+        page.fill("input#edit-search-api-fulltext--2", "Pferd")
+        page.click('text=Naschlagen')
+        page.is_visible()
+        html = page.inner_html()
+        soup = bs4.BeautifulSoup(html, 'html.parser')
+        print(soup.find_all)
+        
 def test_duden_is_working():
     """Tests if duden website is up"""
     can_open = can_open_website(URL) 
