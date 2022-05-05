@@ -1,10 +1,64 @@
 # -*- coding: latin-1 -*-
 from playwright.sync_api import Playwright, sync_playwright
 import bs4 
+import requests
+import tempfile 
+import xmltojson
+import json
+import pandas as pd
+import argparse
 
-word = "Hund"
+
+def parseArguments(): 
+    # Create argument parser
+    parser = argparse.ArgumentParser(description= __doc__)
+
+    # Positional mandatory arguments
+    parser.add_argument('-iw', help='input word', \
+        type=str, required=True, metavar='')
+    
+    parser.add_argument('-oj', help='complete path to JSON',\
+         type=str, required = True, \
+                        metavar='')
+
+    parser.add_argument('-oc', help='complete path to output csv',\
+         type=str, required = True, \
+                        metavar='')
+
+    # Parse arguments
+    args = parser.parse_args()
+    
+    return args
+
+def store_html_as_json(url:str, json_path:str): 
+    html_response = requests.get(url=url)
+    # Save the page content as sample.html
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_dir_path = temp_dir.name 
+    
+    with open(temp_dir_path + "/" + "foo_bar.html", "w") as html_file:
+        html_file.write(html_response.text)
+
+    with open(temp_dir_path + "/" + "foo_bar.html", "r") as html_file:
+        html = html_file.read()
+        json_ = xmltojson.parse(html)
+        print(json_)
+    
+    with open(json_path, "w") as file:
+	    json.dump(json_, file)
+
+def export_definitions_as_csv(csv_path: str, definitions:list, word:str):
+    df = pd.DataFrame(definitions, columns = word)
+    df.to_file(csv_path)
 
 def run(playwright: Playwright) -> None:
+    
+    # Getting input arguments
+    args = parseArguments()
+    csv_path = args.oc
+    json_path = args.oj
+    word = args.iw
+
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -36,18 +90,24 @@ def run(playwright: Playwright) -> None:
 
     print("Getting definitions as list")
     print("="*80)
+    
     definitions = []
+    
     for tag in bedeutung:
         definitions.append((tag.text.strip("\n")))
-    #for definition in definitions:
-    #    print(definition)
-    for count, definition in enumerate(definitions):
+    
+    for count, definition in enumerate(definitions, start=1):
         print(count, definition)
         print("-"*80)
     
     print("="*80)
+
+    store_html_as_json(page, json_path=json_path)
+    export_definitions_as_csv(csv_path=csv_path, 
+                            definitions=definitions,
+                            word=word)
     
-    print("Closing everything")
+    print("Closing browser and context")
     context.close()
     browser.close()
 
