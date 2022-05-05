@@ -21,3 +21,10 @@ Nachfolgend finden Sie eine Liste der Bibliotheken für die Anwendung main.py so
 * Pytest https://docs.pytest.org/en/7.1.x/
 * Request  https://docs.python-requests.org/en/latest/
 
+# Usage
+Die nächste Codezeile dient zum Nachschlagen des Wortes "Wort" im Duden und zum Speichern der Definitionen im CSV-Format und der HTML-Seite im JSON-Format. 
+Die Animation zeigt, wie man die Hilfe abfragt, um die vom CLI benötigten Parameter zu sehen, sowie ein Beispiel für die erwartete Ausgabe für das Wort "Bagger". 
+```
+>python main.py -h -iw Wort -oj Wort.json -oc Wort.csv
+```
+![Alt Text](usage.gif)
