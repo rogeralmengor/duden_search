@@ -1,6 +1,6 @@
 <h1>duden_search</h1>
 
-<img srs = "6eab6b364c.gif" height=500 width=1000></img>
+<img srs="6eab6b364c.gif" height=500 width=1000></img>
 
 
 <h2>Ziele:</h2>
