@@ -1,8 +1,6 @@
 # -*- coding: latin-1 -*-
-from attr import attr
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import Playwright, sync_playwright
 import bs4 
-import pprint
 
 word = "Hund"
 
