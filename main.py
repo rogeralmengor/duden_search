@@ -1,12 +1,16 @@
 # -*- coding: latin-1 -*-
+"""
+Small command line programme for looking up words from the Duden dictionary
+"""
+
 from playwright.sync_api import Playwright, sync_playwright
 import bs4 
 import requests
 import tempfile 
-import xmltojson
 import json
 import pandas as pd
 import argparse
+import html_to_json
 
 
 def parseArguments(): 
@@ -36,28 +40,24 @@ def store_html_as_json(url:str, json_path:str):
     temp_dir = tempfile.TemporaryDirectory()
     temp_dir_path = temp_dir.name 
     
-    with open(temp_dir_path + "/" + "foo_bar.html", "w") as html_file:
+    with open(temp_dir_path + "/" + "foo_bar.html", "w", encoding="utf-8") as html_file:
         html_file.write(html_response.text)
 
-    with open(temp_dir_path + "/" + "foo_bar.html", "r") as html_file:
+    with open(temp_dir_path + "/" + "foo_bar.html", "r", encoding="utf-8") as html_file:
         html = html_file.read()
-        json_ = xmltojson.parse(html)
-        print(json_)
+        print(html)
+        json_ = html_to_json.convert(html)
     
-    with open(json_path, "w") as file:
+    with open(json_path, "w", encoding="utf-8") as file:
 	    json.dump(json_, file)
 
 def export_definitions_as_csv(csv_path: str, definitions:list, word:str):
-    df = pd.DataFrame(definitions, columns = word)
-    df.to_file(csv_path)
+    df = pd.DataFrame(definitions, columns = [word])
+    df.to_csv(csv_path)
 
-def run(playwright: Playwright) -> None:
+def run(playwright: Playwright, csv_path:str, json_path:str, word:str) -> None:
     
     # Getting input arguments
-    args = parseArguments()
-    csv_path = args.oc
-    json_path = args.oj
-    word = args.iw
 
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
@@ -102,15 +102,23 @@ def run(playwright: Playwright) -> None:
     
     print("="*80)
 
-    store_html_as_json(page, json_path=json_path)
     export_definitions_as_csv(csv_path=csv_path, 
                             definitions=definitions,
                             word=word)
+    store_html_as_json(page.url, json_path=json_path)
     
     print("Closing browser and context")
     context.close()
     browser.close()
 
-if __name__ == "__main__": 
+
+def main(): 
+    args = parseArguments()
+    csv_path = args.oc
+    json_path = args.oj
+    word = args.iw
     with sync_playwright() as playwright:
-        run(playwright)
+        run(playwright, csv_path, json_path, word)
+
+if __name__ == "__main__":
+    main()  
