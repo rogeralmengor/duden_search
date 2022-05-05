@@ -1,6 +1,5 @@
 import requests
 import bs4
-import urllib.request
 from playwright.sync_api import sync_playwright
 
 
