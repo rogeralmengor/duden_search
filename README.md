@@ -1,3 +1,6 @@
+<img align="left" width="80" height="80" src="https://raw.githubusercontent.com/akarsh/akarsh-seggemu-resume/master/akarsh%20seggemu%20resume/Assets/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60%403x.png" alt="Resume application project app icon">
+<img align="left" width="80" height="80" src="https://raw.githubusercontent.com/akarsh/akarsh-seggemu-resume/master/akarsh%20seggemu%20resume/Assets/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60%403x.png" alt="Resume application project app icon">
+<img align="left" width="80" height="80" src="https://raw.githubusercontent.com/akarsh/akarsh-seggemu-resume/master/akarsh%20seggemu%20resume/Assets/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60%403x.png" alt="Resume application project app icon">
 # duden_search
 
 _Kleines Kommandozeilenprogramm zum Nachschlagen von Wörtern aus dem Duden-Wörterbuch._
@@ -21,10 +24,17 @@ Nachfolgend finden Sie eine Liste der Bibliotheken für die Anwendung main.py so
 * Pytest https://docs.pytest.org/en/7.1.x/
 * Request  https://docs.python-requests.org/en/latest/
 
-# Usage
+## Usage
 Die nächste Codezeile dient zum Nachschlagen des Wortes "Wort" im Duden und zum Speichern der Definitionen im CSV-Format und der HTML-Seite im JSON-Format. 
 Die Animation zeigt, wie man die Hilfe abfragt, um die vom CLI benötigten Parameter zu sehen, sowie ein Beispiel für die erwartete Ausgabe für das Wort "Bagger". 
 ```
 >python main.py -h -iw Wort -oj Wort.json -oc Wort.csv
 ```
 ![Alt Text](usage.gif)
+
+## Test-Politik
+
+Pytest wird als Paket zum Testen verwendet. Einige Eckfälle wurden nicht bewertet, insbesondere bei der Verwendung des Playwright-Selektors für einige Tags im Html-Dokument sowie für den Html-zu-Json-Parser. 
+Um die Tests auszuführen, geben Sie einfach in die Befehlskonsole ```pytest``` ein. Fügen Sie das Flag -v hinzu, um mehr Details über fehlgeschlagene Fälle zu erhalten.
+
+## Enwickler 
