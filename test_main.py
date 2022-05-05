@@ -51,19 +51,3 @@ def test_concatenation_suche():
 def test_can_open_search_word():
     """Tests if website search pattern can be requested"""
     assert True == can_open_website(create_url_search(URL, "Pferd"))
-
-    #page = requests.get(URL)
-    #print(page.text)
-    #page.goto("ttps://www.duden.de")
-    #print(page)
-    #with sync_playwright() as p:
-#        browser = p.chromium.launch()
-#        page = browser.new_page()
-#        page.goto("https://www.duden.de/")
-#        print(page.title())
-#        browser.close()
-    #assert page.inner_text('h1') == 'Example Domain'
-    #page.click("text=More information")
-
-
-#https://www.duden.de/
