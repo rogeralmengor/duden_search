@@ -1,3 +1,6 @@
 __pycache__/*
 .pytest_cache/*
 .gitignore
+playwright_env/*
+*~
+.gitignore
